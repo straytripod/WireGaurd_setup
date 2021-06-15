@@ -8,3 +8,4 @@ cat /etc/wireguard/server-publickey
 apt install openresolv -yy
 # Need to create the config file
 cp ./wg0.conf /etc/wiregaurd/wg0.conf
+chmod 600 /etc/wireguard/wg0.conf
