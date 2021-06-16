@@ -28,7 +28,6 @@ get_ip=$(curl http://myip.dnsmadeeasy.com)
 apt update && sudo apt upgrade -yy
 apt install wireguard wireguard-tools -yy
 umask 077; wg genkey | tee /etc/wireguard/server-privatekey | wg pubkey > /etc/wireguard/server-publickey
-server_pub=$(cat /etc/wireguard/server-publickey)
 server_priv=$(cat /etc/wireguard/server-privatekey)
 echo "Here is the private key:"
 cat /etc/wireguard/server-privatekey
@@ -37,9 +36,10 @@ cat /etc/wireguard/server-publickey
 apt install openresolv -yy
 # Need to create the config file
 cp ./wg0.conf /etc/wiregaurd/wg0.conf
-##
 # add keys to file
-##
+sed -i "/PrivateKey =/ s/$/$server_privy/" wg0.conf
+echo "You will need to add the client public key to /etc/wiregaurd/wg0.conf"
+sleep 5
 chmod 600 /etc/wireguard/wg0.conf
 ## Enable IP Forwarding 
 Echo "Enabling IP Forwarding"
@@ -83,7 +83,7 @@ systemctl restart bind9
 systemctl status bind9
 ## Add allow-recursion to bind options
 cp /etc/bind/named.conf.options /etc/bind/named.conf.options.bk
-awk '1;/listen-on-v6 { any; };/ { print "allow-recursion { 127.0.0.1; 10.10.10.0/24; };"}' /etc/bind/named.conf.options
+awk -i inplace '1;/listen-on-v6 { any; };/ { print "allow-recursion { 127.0.0.1; 10.10.10.0/24; };"}' /etc/bind/named.conf.options
 systemctl restart bind9
 echo "adding firewall allow rulles"
 ufw insert 1 allow in from 10.10.10.0/24
