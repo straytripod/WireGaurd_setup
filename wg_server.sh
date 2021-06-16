@@ -54,11 +54,11 @@ echo""
 sleep 5
 chmod 600 /etc/wireguard/wg0.conf
 ## Enable IP Forwarding 
-Echo "Enabling IP Forwarding"
+echo "Enabling IP Forwarding"
 cp /etc/sysctl.conf /etc/sysctl.conf.bk
 echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
 sysctl -p
-Echo "Enabling Firewall with port 22 allowed"
+echo "Enabling Firewall with port 22 allowed"
 ufw allow 22/tcp
 echo "Here are the interface names."
 ip -o link show | awk -F': ' '{print $2}'
