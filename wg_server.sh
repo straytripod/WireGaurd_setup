@@ -44,10 +44,10 @@ echo""
 echo""
 sleep 10
 apt install openresolv -yy
-# Need to create the config file
-cp ./wg0.conf /etc/wireguard/wg0.conf
 # add keys to file
 sed -i "/PrivateKey =/ s/$/$server_priv/" wg0.conf
+# Need to create the config file
+cp ./wg0.conf /etc/wireguard/wg0.conf
 echo""
 echo "You will need to add the client public key to /etc/wiregaurd/wg0.conf"
 echo""
@@ -116,8 +116,16 @@ systemctl restart bind9
 echo "adding firewall allow rulles"
 ufw insert 1 allow in from 10.10.10.0/24
 ufw allow 51820/udp
-wg-quick up /etc/wireguard/wg0.conf
-systemctl enable wg-quick@wg0.service
+echo"#############################################################################"
+echo "You will need to add the client public key to /etc/wiregaurd/wg0.conf first"
+echo "The servive can be started with the following commands:"
+echo""
+echo "wg-quick up /etc/wireguard/wg0.conf"
+echo "systemctl enable wg-quick@wg0.service"
+echo "use 'wg' command to verify tunnel is up"
+echo "############################################################################"
+echo ""
+sleep 5
 systemctl status wg-quick@wg0.service
 
 
