@@ -23,6 +23,7 @@ echo "This interface will be assigned to IP Tables for NAT Filtering."
 ip -o link show | awk -F'2: ' '{print $2}' | awk -F': ' '{print $1}'
 echo "If this is not correct, Press ctrl + c to cancel"
 pause
+## Adding NAT rulles
 NETIF=$(ip -o link show | awk -F'2: ' '{print $2}' | awk -F': ' '{print $1}')
 echo "# NAT table rules" >> /etc/ufw/before.rules
 echo "*nat" >> /etc/ufw/before.rules
@@ -31,7 +32,8 @@ echo "-A POSTROUTING -o "$NETIF" -j MASQUERADE" >> /etc/ufw/before.rules
 echo "" >> /etc/ufw/before.rules
 echo "# End each table with the 'COMMIT' line or these rules won't be processed" >> /etc/ufw/before.rules
 echo "COMMIT" >> /etc/ufw/before.rules
-# Add
-# allow forwarding for trusted network
--A ufw-before-forward -s 10.10.10.0/24 -j ACCEPT
--A ufw-before-forward -d 10.10.10.0/24 -j ACCEPT
+# Add forwrding fo trused networks
+echo "# allow forwarding for trusted network" >> /etc/ufw/before.rules
+echo "-A ufw-before-forward -s 10.10.10.0/24 -j ACCEPT" >> /etc/ufw/before.rules
+echo "-A ufw-before-forward -d 10.10.10.0/24 -j ACCEPT+"  >> /etc/ufw/before.rules
+echo "COMMIT" >> /etc/ufw/before.rules
