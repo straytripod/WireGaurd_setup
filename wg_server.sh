@@ -1,3 +1,5 @@
+#!/bin/bash
+get_ip=$(curl http://myip.dnsmadeeasy.com)
 apt update && sudo apt upgrade -yy
 apt install wireguard wireguard-tools -yy
 umask 077; wg genkey | tee /etc/wireguard/server-privatekey | wg pubkey > /etc/wireguard/server-publickey
