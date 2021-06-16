@@ -61,7 +61,7 @@ sysctl -p
 Echo "Enabling Firewall with port 22 allowed"
 ufw allow 22/tcp
 echo "Here are the interface names."
-ip -o link show | awk -F'2: ' '{print $2}'
+ip -o link show | awk -F': ' '{print $2}'
 echo "The second one listed is typcally the main netowrk interface used."
 echo "This interface will be assigned to IP Tables for NAT Filtering."
 ip -o link show | awk -F'2: ' '{print $2}' | awk -F': ' '{print $1}'
