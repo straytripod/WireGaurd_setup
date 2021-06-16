@@ -21,8 +21,9 @@ echo "############################################################"
 echo "##   Server IP: 10.10.10.1/24                            ###"
 echo "##   Client IP: 10.10.10.2/24                            ###"
 echo "############################################################"
-echo "Please review the script before running. You could lose access to this computer."
-echo "Due to firewall changes."
+echo "Please review the script before running."
+echo "Script modifcation maybe needed for your setup."
+echo "We will modify the fire wall. You could lose access to this computer."
 echo ""
 echo ""
 read -p "Press any key to continue ..."
@@ -31,8 +32,10 @@ apt update && sudo apt upgrade -yy
 apt install wireguard wireguard-tools -yy
 umask 077; wg genkey | tee /etc/wireguard/server-privatekey | wg pubkey > /etc/wireguard/server-publickey
 server_priv=$(cat /etc/wireguard/server-privatekey)
-echo""
-echo""
+echo ""
+echo ""
+echo "Take a moment to copy these keys."
+echo "From: /etc/wireguard/"
 echo "############################################################"
 echo "Here is the private key:"
 cat /etc/wireguard/server-privatekey
@@ -69,10 +72,7 @@ echo""
 echo "The second one listed is typcally the main netowrk interface used."
 echo""
 echo "This interface will be assigned to IP Tables for NAT Filtering."
-echo""
-echo""
 ip -o link show | awk -F'2: ' '{print $2}' | awk -F': ' '{print $1}'
-echo""
 echo""
 echo "If this is not correct, Press ctrl + c to cancel"
 echo""
@@ -116,17 +116,15 @@ systemctl restart bind9
 echo "adding firewall allow rulles"
 ufw insert 1 allow in from 10.10.10.0/24
 ufw allow 51820/udp
-echo"#############################################################################"
+echo "#############################################################################"
 echo "You will need to add the client public key to /etc/wiregaurd/wg0.conf first"
 echo "The servive can be started with the following commands:"
-echo""
+echo ""
 echo "wg-quick up /etc/wireguard/wg0.conf"
 echo "systemctl enable wg-quick@wg0.service"
+echo ""
 echo "use 'wg' command to verify tunnel is up"
 echo "############################################################################"
 echo ""
 sleep 5
 systemctl status wg-quick@wg0.service
-
-
-
