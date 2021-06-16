@@ -31,4 +31,7 @@ echo "-A POSTROUTING -o "$NETIF" -j MASQUERADE" >> /etc/ufw/before.rules
 echo "" >> /etc/ufw/before.rules
 echo "# End each table with the 'COMMIT' line or these rules won't be processed" >> /etc/ufw/before.rules
 echo "COMMIT" >> /etc/ufw/before.rules
-
+# Add
+# allow forwarding for trusted network
+-A ufw-before-forward -s 10.10.10.0/24 -j ACCEPT
+-A ufw-before-forward -d 10.10.10.0/24 -j ACCEPT
