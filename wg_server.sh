@@ -37,7 +37,7 @@ apt install openresolv -yy
 # Need to create the config file
 cp ./wg0.conf /etc/wiregaurd/wg0.conf
 # add keys to file
-sed -i "/PrivateKey =/ s/$/$server_privy/" wg0.conf
+sed -i "/PrivateKey =/ s/$/$server_priv/" wg0.conf
 echo "You will need to add the client public key to /etc/wiregaurd/wg0.conf"
 sleep 5
 chmod 600 /etc/wireguard/wg0.conf
