@@ -60,12 +60,22 @@ echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
 sysctl -p
 echo "Enabling Firewall with port 22 allowed"
 ufw allow 22/tcp
+echo""
 echo "Here are the interface names."
+echo""
+echo""
 ip -o link show | awk -F': ' '{print $2}'
+echo""
 echo "The second one listed is typcally the main netowrk interface used."
+echo""
 echo "This interface will be assigned to IP Tables for NAT Filtering."
+echo""
+echo""
 ip -o link show | awk -F'2: ' '{print $2}' | awk -F': ' '{print $1}'
+echo""
+echo""
 echo "If this is not correct, Press ctrl + c to cancel"
+echo""
 read -p "Press any key to continue ..."
 ## Adding NAT rulles
 cp /etc/ufw/before.rules /etc/ufw/before.rules.bk
@@ -86,9 +96,15 @@ echo "COMMIT" >> /etc/ufw/before.rules
 ## Enable the firewall
 ufw enable
 systemctl restart ufw
+echo""
 echo "Here is the Masquerade rule we have defined."
+echo""
 iptables -t nat -L POSTROUTING
+echo""
+echo""
 echo "Since the VPN server has been defined as the DNS server for client, we need to run a DNS resolver on the VPN server. We wil install the bind9 DNS server."
+echo""
+echo""
 sleep 10
 apt install bind9
 systemctl restart bind9
