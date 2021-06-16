@@ -23,12 +23,16 @@ echo "##   Client IP: 10.10.10.2/24                            ###"
 echo "############################################################"
 echo "Please review the script before running. You could lose access to this computer."
 echo "Due to firewall changes."
-pause
+echo ""
+echo ""
+read -p "Press any key to continue ..."
 get_ip=$(curl http://myip.dnsmadeeasy.com)
 apt update && sudo apt upgrade -yy
 apt install wireguard wireguard-tools -yy
 umask 077; wg genkey | tee /etc/wireguard/server-privatekey | wg pubkey > /etc/wireguard/server-publickey
 server_priv=$(cat /etc/wireguard/server-privatekey)
+echo""
+echo""
 echo "############################################################"
 echo "Here is the private key:"
 cat /etc/wireguard/server-privatekey
@@ -36,13 +40,17 @@ echo "############################################################"
 echo "Here is the public key:"
 cat /etc/wireguard/server-publickey
 echo "############################################################"
-sleep 5
+echo""
+echo""
+sleep 10
 apt install openresolv -yy
 # Need to create the config file
 cp ./wg0.conf /etc/wireguard/wg0.conf
 # add keys to file
 sed -i "/PrivateKey =/ s/$/$server_priv/" wg0.conf
+echo""
 echo "You will need to add the client public key to /etc/wiregaurd/wg0.conf"
+echo""
 sleep 5
 chmod 600 /etc/wireguard/wg0.conf
 ## Enable IP Forwarding 
@@ -58,7 +66,7 @@ echo "The second one listed is typcally the main netowrk interface used."
 echo "This interface will be assigned to IP Tables for NAT Filtering."
 ip -o link show | awk -F'2: ' '{print $2}' | awk -F': ' '{print $1}'
 echo "If this is not correct, Press ctrl + c to cancel"
-pause
+read -p "Press any key to continue ..."
 ## Adding NAT rulles
 cp /etc/ufw/before.rules /etc/ufw/before.rules.bk
 NETIF=$(ip -o link show | awk -F'2: ' '{print $2}' | awk -F': ' '{print $1}')
